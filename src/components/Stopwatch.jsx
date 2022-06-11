@@ -24,7 +24,7 @@ const Stopwatch = () => {
     }
   return (
     <div>
-        <h2>Stopwatch</h2>
+        <h2>INCRESING TIMER</h2>
         <h1>{watch}</h1>
         <div>
             <button onClick={start}>Start</button>
