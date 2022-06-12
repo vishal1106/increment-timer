@@ -1,38 +1,33 @@
-import React, { useRef } from 'react'
-import { useState } from 'react'
+import React from 'react'
+import { useState,useEffect } from 'react'
 const Stopwatch = () => {
-    // const [timerId,setTimerId]=useState();
-    const [watch ,setWatch]=useState(0)
-    const timerId=useRef(null)
-    const start=()=>{
-        if(!timerId.current)
-        {
-            let id=setInterval(()=>{
-                setWatch((prev)=>prev+1)
-            },1000);
-            timerId.current=id;
-        }
-    };
-    const pause=()=>{
-        clearInterval(timerId.current)
-        timerId.current=null;
-    }
-    const reset=()=>{
-       clearInterval(timerId.current)
-       setWatch(0);
-       timerId.current=null;
-    }
-  return (
-    <div>
-        <h2>INCRESING TIMER</h2>
-        <h1>{watch}</h1>
+    const [time, setTime] = useState(0);
+    const [running, setRunning] = useState(false);
+    useEffect(() => {
+      let interval;
+      if (running) {
+        interval = setInterval(() => {
+          setTime((prevTime) => prevTime + 10);
+        }, 10);
+      } else if (!running) {
+        clearInterval(interval);
+      }
+      return () => clearInterval(interval);
+    }, [running]);
+    return (
+      <div >Increment Timer
         <div>
-            <button onClick={start}>Start</button>
-            <button onClick={pause}>Clean</button>
-            <button onClick={reset}>End</button>
+       
+          <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
+          <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
         </div>
-    </div>
-  )
-}
+        <div className="buttons">
+          <button onClick={() => setRunning(true)}>Start</button>
+          <button onClick={() => setRunning(false)}>Stop</button>
+          <button onClick={() => setTime(0)}>Reset</button>       
+        </div>
+      </div>
+    );
+  };
 
 export default Stopwatch
